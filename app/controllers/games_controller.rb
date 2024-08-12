@@ -7,13 +7,14 @@ class GamesController < ApplicationController
   end
 
   def score
-    guess = params[:guess]
+    guess = params[:guess].to_s
     url = "https://dictionary.lewagon.com/#{guess}"
     file = URI.open(url).read
     doc = JSON.parse(file)
+    check = params[:letters]
 
     if doc['found'] == true
-      if @letters.chars.include?(guess)
+      if guess.chars.all?(check)
         @result = "#{guess} is a valid english word"
       else
         @result = "Sorry but #{guess} can't be built out"
